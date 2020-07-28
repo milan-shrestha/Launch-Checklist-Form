@@ -2,7 +2,7 @@
 window.addEventListener("load", function() {
 
    let form = document.querySelector("form");
-   form.addEventListener("submit", function() {
+   form.addEventListener("submit", function (event) {
       
       let pilotNameInput = document.querySelector("input[name=pilotName]");
       let copilotNameInput = document.querySelector("input[name=copilotName]");
@@ -17,7 +17,6 @@ window.addEventListener("load", function() {
       if (pilotName === false || copilotName === false || fuelLevel === false || cargoMass === false) {
 
          event.preventDefault();
-         alert('Please enter the missing information.');
 
       } else {
 
@@ -69,34 +68,11 @@ window.addEventListener("load", function() {
       if (fuelLevel > 10000 && cargoMass < 10000) {
 
          displaySuccessStatus();
+      } else {
 
-      } else if (fuelLevel < 10000) {
-
-         let fuelStatus = document.getElementById("fuelStatus");
-         fuelStatus.innerHTML = "Not enough fuel for the journey.";
-         displayFaultyStatus(pilotName, copilotName);
-
-      } else if (cargoMass > 10000) {
-
-         let cargoStatus = document.getElementById("cargoStatus");
-         cargoStatus.innerHTML= "Too much cargo mass for the shuttle to take off.";
-         displayFaultyStatus(pilotName, copilotName);
+         displayFaultyStatus(pilotName, copilotName, fuelLevel, cargoMass);
       }
    };
-
-
-   function displayFaultyStatus(pilotName, copilotName) {
-
-      let faultyStatus = document.getElementById("faultyItems");
-      let launchStatus = document.getElementById("launchStatus");
-
-      pilotStatus.innerHTML = `${pilotName} is ready for the launch.`;
-      copilotStatus.innerHTML = `${copilotName} is ready for the launch.`;
-
-      faultyStatus.style.visibility = "visible";
-      launchStatus.innerHTML = "Shuttle not ready for launch";
-      launchStatus.style.color = "red";
-   }
 
 
    function displaySuccessStatus() {
@@ -108,6 +84,32 @@ window.addEventListener("load", function() {
 
       displayMissionInformation();
    };
+
+
+   function displayFaultyStatus(pilotName, copilotName, fuelLevel, cargoMass) {
+
+      let faultyStatus = document.getElementById("faultyItems");
+      let launchStatus = document.getElementById("launchStatus");
+
+      faultyStatus.style.visibility = "visible";
+      launchStatus.innerHTML = "Shuttle not ready for launch";
+      launchStatus.style.color = "red";
+
+      pilotStatus.innerHTML = `${pilotName} is ready for the launch.`;
+      copilotStatus.innerHTML = `${copilotName} is ready for the launch.`;
+
+      if (fuelLevel < 10000) {
+
+         let fuelStatus = document.getElementById("fuelStatus");
+         fuelStatus.innerHTML = "Not enough fuel for the journey.";
+      }
+
+      if (cargoMass > 10000) {
+
+         let cargoStatus = document.getElementById("cargoStatus");
+         cargoStatus.innerHTML= "Too much cargo mass for the shuttle to take off.";
+      }
+   }
 
 
    function displayMissionInformation() {
